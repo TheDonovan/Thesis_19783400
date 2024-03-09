@@ -6,14 +6,15 @@
 
 manifest:
   remotes:
-    - name: nrfconnect
-      url-base: https://github.com/nrfconnect
+    - name: zephyrproject
+      url-base: https://github.com/zephyrproject-rtos
   projects:
-    - name: nrf
-      repo-path: sdk-nrf
-      remote: nrfconnect
-      revision: v1.7.0
-      import: true
+    - name: zephyr
+      repo-path: zephyr
+      remote: zephyrproject
+      revision: v3.4.0
+      import:
+        path-prefix: deps
   self:
     # This repository should be cloned to 
-    path: app
+    path: thesis-trial
