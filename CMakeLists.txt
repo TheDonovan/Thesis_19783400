@@ -54,6 +54,7 @@ endif()
 
 find_package(Zephyr REQUIRED HINTS $ENV{ZEPHYR_BASE})
 
+
 project(thesis-trial)
 
 target_sources(app PRIVATE src/main.c)
