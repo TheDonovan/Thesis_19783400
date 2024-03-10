@@ -6,13 +6,11 @@
 
 #include <zephyr/kernel.h>
 
-//#include <logging/log.h>
-
-//LOG_MODULE_REGISTER(app_main);
-
 int main(void)
 {
-	//LOG_INF("Hello World! %s", CONFIG_BOARD);
-	//LOG_INF("Version: %s", CONFIG_APP_VERSION);
+
+	//VARIABLES
+
+	
 	return(0);
 }
