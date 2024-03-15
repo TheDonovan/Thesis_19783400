@@ -1,0 +1,11 @@
+/* For later use with LAN9370 board
+&spi1 {
+    //compatible = "";
+    status = "okay";
+    sck-pin = <>;
+    miso-pin = <>;
+    mosi-pin = <>;
+    cs-gpio = <>;
+
+};
+*/
