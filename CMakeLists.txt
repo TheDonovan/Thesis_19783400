@@ -42,6 +42,7 @@ list(APPEND CONF_FILE
   ${CMAKE_CURRENT_SOURCE_DIR}/conf/prj.conf
   ${CMAKE_CURRENT_SOURCE_DIR}/conf/${BUILD_TYPE}.conf
   ${CMAKE_CURRENT_SOURCE_DIR}/boards/${BOARD}.conf
+  ${CMAKE_CURRENT_SOURCE_DIR}/boards/${BOARD}.overlay
   )
 
 # Adding custom overlay to add settings that aren't included in the SDK (yet) for the nRF9160 Feather
