@@ -14,11 +14,6 @@ endif()
 # Print out build type
 message(STATUS "Build type: ${BUILD_TYPE} 🚀")
 
-# Set environment variables
-# set(ZEPHYR_TOOLCHAIN_VARIANT gnuarmemb)
-# set(GNUARMEMB_TOOLCHAIN_PATH "C:\\Program Files (x86)\\GNU Tools Arm Embedded\\9 2019-q4-major")
-# set(GNUARMEMB_TOOLCHAIN_PATH /Users/jaredwolff/gcc-arm-none-eabi-9-2019-q4-major)
-
 # Get the version from Git
 find_package(Git QUIET)
 if(GIT_FOUND)
@@ -41,20 +36,9 @@ endif()
 list(APPEND CONF_FILE
   ${CMAKE_CURRENT_SOURCE_DIR}/conf/prj.conf
   ${CMAKE_CURRENT_SOURCE_DIR}/conf/${BUILD_TYPE}.conf
-  ${CMAKE_CURRENT_SOURCE_DIR}/boards/${BOARD}.conf
-  ${CMAKE_CURRENT_SOURCE_DIR}/boards/${BOARD}.overlay
   )
-
-# Adding custom overlay to add settings that aren't included in the SDK (yet) for the nRF9160 Feather
-if(${BOARD} STREQUAL circuitdojo_feather_nrf9160ns)
-message(STATUS "Adding .overlay for mcuboot.")
-list(APPEND mcuboot_DTC_OVERLAY_FILE
-  "${CMAKE_CURRENT_SOURCE_DIR}/conf/mcuboot/circuitdojo_feather_nrf9160ns.overlay"
-  )
-endif()
 
 find_package(Zephyr REQUIRED HINTS $ENV{ZEPHYR_BASE})
-
 
 project(thesis-trial)
 

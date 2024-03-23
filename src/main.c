@@ -24,7 +24,7 @@ int main(void)
     //BASED OFF: https://github.com/golioth/samples/tree/main/hello-ethernet
     if(IS_ENABLED(CONFIG_NET_L2_ETHERNET))
     {
-        LOG_INF("Connected to Ethernet");
+        LOG_INF("Ethernet Available");
         struct net_if *iface;
         iface = net_if_get_default();
         net_dhcpv4_start(iface);
