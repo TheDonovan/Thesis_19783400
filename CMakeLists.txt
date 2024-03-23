@@ -14,24 +14,6 @@ endif()
 # Print out build type
 message(STATUS "Build type: ${BUILD_TYPE} 🚀")
 
-# Get the version from Git
-find_package(Git QUIET)
-if(GIT_FOUND)
-  execute_process(
-    COMMAND git describe --tags --long
-    WORKING_DIRECTORY                ${CMAKE_CURRENT_SOURCE_DIR}
-    OUTPUT_STRIP_TRAILING_WHITESPACE
-    ERROR_STRIP_TRAILING_WHITESPACE
-    ERROR_VARIABLE                   stderr
-    RESULT_VARIABLE                  return_code
-  )
-  if(return_code)
-    message(STATUS "git describe failed: ${stderr}; ${KERNEL_VERSION_STRING} will be used instead")
-  elseif(CMAKE_VERBOSE_MAKEFILE)
-    message(STATUS "git describe stderr: ${stderr}")
-  endif()
-endif()
-
 # Define configuration files.
 list(APPEND CONF_FILE
   ${CMAKE_CURRENT_SOURCE_DIR}/conf/prj.conf
