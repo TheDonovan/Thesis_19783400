@@ -3,6 +3,10 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #
+#Based off the following project
+#
+# https://github.com/circuitdojo/zephyr-template/blob/main/CMakeLists.txt
+#
 
 cmake_minimum_required(VERSION 3.13.4)
 
