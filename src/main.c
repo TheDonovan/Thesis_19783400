@@ -34,22 +34,25 @@ int main(void)
         struct net_if *iface;
         iface = net_if_get_default();
         net_dhcpv4_start(iface);
+
     }
 
+
+    //BLINKING LED CODE
 
     int ret;
 
 
     if(!gpio_is_ready_dt(&led))
     {
-        return;
+        return(0);
     }
 
     ret = gpio_pin_configure_dt(&led, GPIO_OUTPUT_ACTIVE);
     
     if(ret < 0)
     {
-        return;
+        return(0);
     }
 
     while(1)
@@ -57,9 +60,9 @@ int main(void)
         ret = gpio_pin_toggle_dt(&led);
         if(ret < 0)
         {
-            return;
+            return(0);
         }
         k_msleep(SLEEP_TIME_MS);
     }
-
+    
 }
