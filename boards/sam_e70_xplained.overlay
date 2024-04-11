@@ -16,6 +16,10 @@
 		led3 = &yellow_led;
 	};
 
+	chosen {
+		
+	};
+
 	leds{
 		compatible = "gpio-leds";
 
@@ -26,17 +30,17 @@
 	};
 };
 
-/*
 &mdio {
 	status = "okay";
 
 	pinctrl-0 = <&mdio_default>;
 	pinctrl-names = "default";
 
+	//CHANGING DEFAULT ETHERNET PHY TO REG 1
 	phy: ethernet-phy@0 {
 		compatible = "ethernet-phy";
 		status = "okay";
 		reg = <1>;
 	};
+
 };
-*/
