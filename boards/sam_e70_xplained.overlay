@@ -1,0 +1,42 @@
+/*
+ * Copyright (c) 2021 Nordic Semiconductor ASA
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+/* This devicetree overlay file will be automatically picked by the Zephyr
+ * build system when building the sample for the sam_E70 and sam_E70(B) board. It shows
+ * how the example-application can be built on sample boards already provided
+ * by Zephyr.
+ */
+
+
+
+/ {
+	aliases{
+		led3 = &yellow_led;
+	};
+
+	leds{
+		compatible = "gpio-leds";
+
+		yellow_led: led_3 {
+			gpios = <&pioa 5 GPIO_ACTIVE_LOW>;
+			label = "User LED3";
+		};
+	};
+};
+
+/*
+&mdio {
+	status = "okay";
+
+	pinctrl-0 = <&mdio_default>;
+	pinctrl-names = "default";
+
+	phy: ethernet-phy@0 {
+		compatible = "ethernet-phy";
+		status = "okay";
+		reg = <1>;
+	};
+};
+*/
