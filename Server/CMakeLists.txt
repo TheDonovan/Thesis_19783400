@@ -24,6 +24,7 @@ list(APPEND CONF_FILE
   ${CMAKE_CURRENT_SOURCE_DIR}/conf/${BUILD_TYPE}.conf
   )
 
+set(BOARD sam_e70_xplained/same70q21b)
 find_package(Zephyr REQUIRED HINTS $ENV{ZEPHYR_BASE})
 
 project(thesis-trial)

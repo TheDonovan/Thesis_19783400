@@ -40,7 +40,18 @@
 	phy: ethernet-phy@0 {
 		compatible = "ethernet-phy";
 		status = "okay";
-		reg = <1>;
+		reg = <0>;
 	};
+
+	/*
+	phy: ethernet-phy@0 {
+		compatible = "ethernet-phy";
+		status = "okay";
+		reg = <0>;
+		reg = <1>;
+		reg = <2>;
+		no-reset = "false";
+	};
+	 */
 
 };
