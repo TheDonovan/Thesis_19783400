@@ -52,27 +52,7 @@ K_THREAD_DEFINE(sender_thread_id, STACK_SIZE,
 		THREAD_PRIORITY, 0, -1);
 
 //SENT DATA
-const char sent_data[] = 
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque "
-	"sodales lorem lorem, sed congue enim vehicula a. Sed finibus diam sed "
-	"odio ultrices pharetra. Nullam dictum arcu ultricies turpis congue, "
-	"vel venenatis turpis venenatis. Nam tempus arcu eros, ac congue libero "
-	"tristique congue. Proin velit lectus, euismod sit amet quam in, "
-	"maximus condimentum urna. Cras vel erat luctus, mattis orci ut, varius "
-	"urna. Nam eu lobortis velit."
-	"\n"
-	"Nullam sit amet diam vel odio sodales cursus vehicula eu arcu. Proin "
-	"fringilla, enim nec consectetur mollis, lorem orci interdum nisi, "
-	"vitae suscipit nisi mauris eu mi. Proin diam enim, mollis ac rhoncus "
-	"vitae, placerat et eros. Suspendisse convallis, ipsum nec rhoncus "
-	"aliquam, ex augue ultrices nisl, id aliquet mi diam quis ante. "
-	"Pellentesque venenatis ornare ultrices. Quisque et porttitor lectus. "
-	"Ut venenatis nunc et urna imperdiet porttitor non laoreet massa. Donec "
-	"eleifend eros in mi sagittis egestas. Sed et mi nunc. Nunc vulputate, "
-	"mauris non ullamcorper viverra, lorem nulla vulputate diam, et congue "
-	"dui velit non erat. Duis interdum leo et ipsum tempor consequat. In "
-	"faucibus enim quis purus vulputate nullam."
-	"\n";
+const char sent_data[] = "Recieved";
 
 static void quit(void)
 {
@@ -113,6 +93,8 @@ static int recv_packet_socket(struct packet_data *packet)
 {
 	int ret = 0;
 	int received;
+	char* data;
+
 
 	LOG_INF("Waiting for packets ...");
 
@@ -133,9 +115,13 @@ static int recv_packet_socket(struct packet_data *packet)
 			LOG_ERR("RAW : recv error %d", errno);
 			ret = -errno;
 			break;
+		
 		}
 
-		LOG_DBG("Received %d bytes", received);
+		data = packet->recv_buffer;
+
+		LOG_DBG("Received %d bytes || %s", received, data);
+
 	} while (true);
 
 	return ret;
