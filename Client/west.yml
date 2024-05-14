@@ -17,4 +17,4 @@ manifest:
         path-prefix: deps
   self:
     # This repository should be cloned to 
-    path: Server
+    path: Client

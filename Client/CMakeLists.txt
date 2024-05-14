@@ -27,6 +27,6 @@ list(APPEND CONF_FILE
 set(BOARD sam_e70_xplained/same70q21b)
 find_package(Zephyr REQUIRED HINTS $ENV{ZEPHYR_BASE})
 
-project(Server)
+project(Client)
 
 target_sources(app PRIVATE src/main.c)
