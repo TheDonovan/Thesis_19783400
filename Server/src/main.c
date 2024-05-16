@@ -225,7 +225,7 @@ static int send_packet_socket(struct packet_data *packet)
 			break;
 		} else {
 			if (!FLOOD) {
-				LOG_DBG("Sent %zd bytes", send);
+				LOG_DBG("Sent %zd bytes || %s", send, sent_data);
 			}
 		}
 
@@ -296,6 +296,7 @@ static void wait_for_interface(void)
 int main(void)
 {
 	//BUTTON INIT CODE
+	gpio_pin_interrupt_configure_dt(&button, GPIO_INT_EDGE_TO_ACTIVE);
 	gpio_init_callback(&button_cb_data, button_pressed, BIT(button.pin));
 	gpio_add_callback(button.port, &button_cb_data);
 	printk("Set up button at %s pin %d\n", button.port->name, button.pin);

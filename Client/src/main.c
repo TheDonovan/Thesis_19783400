@@ -102,7 +102,7 @@ static int recv_packet_socket(struct packet_data *packet)
 	int ret = 0;
 	int received;
 	char* data;
-	char expected[] = "TRUE";
+	char* expected = "TRUE";
 
 
 	LOG_INF("Waiting for packets ...");
@@ -141,7 +141,7 @@ static int recv_packet_socket(struct packet_data *packet)
 
 		gpio_pin_set_dt(&led, led_flag);
 
-		LOG_DBG("Received %d bytes || %s", received, data);
+		LOG_DBG("Received %d bytes || %s || %d", received, data, led_flag);
 
 	} while (true);
 
