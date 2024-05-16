@@ -9,6 +9,7 @@
 LOG_MODULE_REGISTER(log_register, LOG_LEVEL_DBG);
 
 #include <zephyr/kernel.h>
+#include <zephyr/drivers/gpio.h>
 #include <errno.h>
 #include <stdio.h>
 
@@ -50,6 +51,13 @@ K_THREAD_DEFINE(receiver_thread_id, STACK_SIZE,
 K_THREAD_DEFINE(sender_thread_id, STACK_SIZE,
 		send_packet, NULL, NULL, NULL,
 		THREAD_PRIORITY, 0, -1);
+
+//LED CONFIG
+static struct gpio_dt_spec led = GPIO_DT_SPEC_GET_OR(DT_ALIAS(led3), gpios, {0});
+
+//TRUE = ON
+//FALSE = OFF
+bool led_flag = 0;
 
 //SENT DATA
 const char sent_data[] = "Recieved";
@@ -94,6 +102,7 @@ static int recv_packet_socket(struct packet_data *packet)
 	int ret = 0;
 	int received;
 	char* data;
+	char expected[] = "TRUE";
 
 
 	LOG_INF("Waiting for packets ...");
@@ -119,6 +128,18 @@ static int recv_packet_socket(struct packet_data *packet)
 		}
 
 		data = packet->recv_buffer;
+
+		if(data == expected)
+		{
+			led_flag = true;
+		}
+
+		else
+		{
+			led_flag = false;
+		}
+
+		gpio_pin_set_dt(&led, led_flag);
 
 		LOG_DBG("Received %d bytes || %s", received, data);
 
@@ -265,6 +286,8 @@ static void wait_for_interface(void)
 
 int main(void)
 {
+	printk("Set up LED at %s pin %d\n", led.port->name, led.pin);
+
 	k_sem_init(&quit_lock, 0, K_SEM_MAX_LIMIT);
 
 	wait_for_interface();

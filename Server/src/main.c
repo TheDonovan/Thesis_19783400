@@ -9,6 +9,7 @@
 LOG_MODULE_REGISTER(log_register, LOG_LEVEL_DBG);
 
 #include <zephyr/kernel.h>
+#include <zephyr/drivers/gpio.h>
 #include <errno.h>
 #include <stdio.h>
 
@@ -28,6 +29,17 @@ LOG_MODULE_REGISTER(log_register, LOG_LEVEL_DBG);
 
 #define FLOOD (CONFIG_NET_SEND_WAIT_TIME ? 0 : 1)
 
+//OBTAIN BUTTON CONFIG
+#define SW0_NODE	DT_ALIAS(sw0)
+#if !DT_NODE_HAS_STATUS(SW0_NODE, okay)
+#error "Unsupported board: sw0 devicetree alias is not defined"
+#endif
+
+//BUTTON CONFIG
+static const struct gpio_dt_spec button = GPIO_DT_SPEC_GET_OR(SW0_NODE, gpios, {0});
+static struct gpio_callback button_cb_data;
+
+//GLOBAL VARIABLES AND STRUCTS
 static struct k_sem quit_lock;
 
 struct packet_data {
@@ -52,8 +64,19 @@ K_THREAD_DEFINE(sender_thread_id, STACK_SIZE,
 		THREAD_PRIORITY, 0, -1);
 
 //SENT DATA
-const char sent_data[] = 
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ";
+char sent_data_off[] = "FALSE";
+char sent_data_on[] = "TRUE";
+
+//DATA SENDING FLAG
+//TRUE, LED ON 
+//FALSE, LED OFF
+bool on_off_flag = false;
+
+//FUNCTIONS
+void button_pressed(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
+{
+	on_off_flag = !on_off_flag;
+}
 
 static void quit(void)
 {
@@ -157,6 +180,7 @@ static int send_packet_socket(struct packet_data *packet)
 	struct sockaddr_ll dst = { 0 };
 	size_t send = 100U;
 	int ret;
+	char* sent_data;
 
 	dst.sll_ifindex = net_if_get_by_iface(net_if_get_default());
 
@@ -180,6 +204,17 @@ static int send_packet_socket(struct packet_data *packet)
 			ret = -1;
 			break;
 		}
+
+		if (on_off_flag)
+		{
+			sent_data = sent_data_on;
+		}
+
+		else
+		{
+			sent_data = sent_data_off;
+		}
+		
 
 		/* Sending dummy data */
 		ret = sendto(packet->send_sock, sent_data, send, 0,
@@ -260,6 +295,12 @@ static void wait_for_interface(void)
 
 int main(void)
 {
+	//BUTTON INIT CODE
+	gpio_init_callback(&button_cb_data, button_pressed, BIT(button.pin));
+	gpio_add_callback(button.port, &button_cb_data);
+	printk("Set up button at %s pin %d\n", button.port->name, button.pin);
+
+	//PACKET SENDING CODE
 	k_sem_init(&quit_lock, 0, K_SEM_MAX_LIMIT);
 
 	wait_for_interface();
