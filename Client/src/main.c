@@ -30,6 +30,8 @@ LOG_MODULE_REGISTER(log_register, LOG_LEVEL_DBG);
 
 #define FLOOD (CONFIG_NET_SEND_WAIT_TIME ? 0 : 1)
 
+#define LED_NODE DT_ALIAS(led3)
+
 static struct k_sem quit_lock;
 
 struct packet_data {
@@ -54,7 +56,8 @@ K_THREAD_DEFINE(sender_thread_id, STACK_SIZE,
 		THREAD_PRIORITY, 0, -1);
 
 //LED CONFIG
-static struct gpio_dt_spec led = GPIO_DT_SPEC_GET_OR(DT_ALIAS(led3), gpios, {0});
+
+static struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED_NODE, gpios);
 
 //TRUE = ON
 //FALSE = OFF
@@ -287,6 +290,7 @@ static void wait_for_interface(void)
 
 int main(void)
 {
+	gpio_pin_configure_dt(&led, GPIO_OUTPUT_ACTIVE);
 	printk("Set up LED at %s pin %d\n", led.port->name, led.pin);
 
 	k_sem_init(&quit_lock, 0, K_SEM_MAX_LIMIT);
