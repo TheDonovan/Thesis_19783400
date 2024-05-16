@@ -12,6 +12,7 @@ LOG_MODULE_REGISTER(log_register, LOG_LEVEL_DBG);
 #include <zephyr/drivers/gpio.h>
 #include <errno.h>
 #include <stdio.h>
+#include <string.h>
 
 #include <zephyr/net/socket.h>
 #include <zephyr/net/ethernet.h>
@@ -57,7 +58,7 @@ static struct gpio_dt_spec led = GPIO_DT_SPEC_GET_OR(DT_ALIAS(led3), gpios, {0})
 
 //TRUE = ON
 //FALSE = OFF
-bool led_flag = 0;
+bool led_flag = false;
 
 //SENT DATA
 const char sent_data[] = "Recieved";
@@ -102,7 +103,7 @@ static int recv_packet_socket(struct packet_data *packet)
 	int ret = 0;
 	int received;
 	char* data;
-	char* expected = "TRUE";
+	const char* expected = "TRUE";
 
 
 	LOG_INF("Waiting for packets ...");
@@ -129,7 +130,7 @@ static int recv_packet_socket(struct packet_data *packet)
 
 		data = packet->recv_buffer;
 
-		if(data == expected)
+		if(strcmp(data, expected) == 0)
 		{
 			led_flag = true;
 		}

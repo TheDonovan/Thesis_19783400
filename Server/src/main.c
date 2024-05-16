@@ -64,8 +64,8 @@ K_THREAD_DEFINE(sender_thread_id, STACK_SIZE,
 		THREAD_PRIORITY, 0, -1);
 
 //SENT DATA
-char sent_data_off[] = "FALSE";
-char sent_data_on[] = "TRUE";
+const char* sent_data_off = "FALSE";
+const char* sent_data_on = "TRUE";
 
 //DATA SENDING FLAG
 //TRUE, LED ON 
@@ -180,7 +180,7 @@ static int send_packet_socket(struct packet_data *packet)
 	struct sockaddr_ll dst = { 0 };
 	size_t send = 100U;
 	int ret;
-	char* sent_data;
+	const char* sent_data;
 
 	dst.sll_ifindex = net_if_get_by_iface(net_if_get_default());
 
